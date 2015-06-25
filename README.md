@@ -10,6 +10,13 @@ React is a JavaScript library for building user interfaces.
 
 [Learn how to use React in your own project.](https://facebook.github.io/react/docs/getting-started.html).
 
+## Tips
+
+######Upon facing the 'Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.' error message:
+
+try `$ python -m SimpleHTTPServer` then access your file on `localhost:8000`.
+
+
 ## Examples
 
 We have several examples [on the website](https://facebook.github.io/react/). Here is the first one to get you started:
