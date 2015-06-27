@@ -33,12 +33,13 @@ var CommentsForm = React.createClass({
 
 var Comments = React.createClass({
 	render: function() {
+		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
 		return (
 			<div className="comments">
 				<h2 className="commentsAuthor">
 					{this.props.author}
 				</h2>
-				{this.props.children}
+				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		)
 	}
