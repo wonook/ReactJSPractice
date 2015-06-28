@@ -13,6 +13,10 @@ var CommentsBox = React.createClass({
 		});
 	},
 	handlesCommentsSubmit: function(comments) {
+		//optimization
+		var commentslist = this.state.datas;
+		var newComments = commentslist.concat([comments]);
+		this.setState({datas: newComments});
 		// submit to the server and refresh the list.
 		$.ajax({
 			url: this.props.url,
