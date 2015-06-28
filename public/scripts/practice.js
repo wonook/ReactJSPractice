@@ -12,6 +12,21 @@ var CommentsBox = React.createClass({
 			}.bind(this)
 		});
 	},
+	handlesCommentsSubmit: function(comments) {
+		// submit to the server and refresh the list.
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			type: 'POST',
+			data: comments,
+			success: function(datas) {
+				this.setState({datas: datas});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
 	getInitialState: function() { // Name matters
 		return {datas: []};
 	},
@@ -24,7 +39,7 @@ var CommentsBox = React.createClass({
 			<div className="commentsBox">
 				<h1>Comments</h1>
 				<CommentsList datas={this.state.datas}/>
-				<CommentsForm />
+				<CommentsForm onCommentsSubmit={this.handlesCommentsSubmit}/>
 			</div>
 		);
 	}
@@ -48,11 +63,27 @@ var CommentsList = React.createClass({
 });
 
 var CommentsForm = React.createClass({
+	handlesSubmit: function(e) {
+		e.preventDefault(); // to prevent the browser's default action of submitting the form
+		var authors = React.findDOMNode(this.refs.authors).value.trim();
+		var texts = React.findDOMNode(this.refs.texts).value.trim();
+		if(!texts || !authors) {
+			return;
+		}
+		// send request to the server
+		this.props.onCommentsSubmit({author: authors, text: texts});
+		// reset values
+		React.findDOMNode(this.refs.authors).value = '';
+		React.findDOMNode(this.refs.texts).value = '';
+		return;
+	},
   	render: function() { // Name matters
     	return (
-      		<div className="commentsForm">
-        		Hello, world! I am a CommentsForm.
-      		</div>
+      		<form className="commentsForm" onSubmit={this.handlesSubmit}>
+        		<input type="text" placeholder="Username" ref="authors" />
+        		<input type="text" placeholder="Say something.." ref="texts" />
+        		<input type="submit" value="Post" />
+      		</form>
     	);
   	}
 });
