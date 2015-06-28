@@ -1,22 +1,37 @@
 var CommentsBox = React.createClass({
-	render: function() {
+	loadCommentFromServer: function() {
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			cache: false,
+			success: function(datas) {
+				this.setState({datas: datas});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
+	getInitialState: function() { // Name matters
+		return {datas: []};
+	},
+	componentDidMount: function() { // Name matters
+		this.loadCommentFromServer();
+		setInterval(this.loadCommentFromServer, this.props.pollInterval);
+	},
+	render: function() { // Name matters
 		return (
 			<div className="commentsBox">
 				<h1>Comments</h1>
-				<CommentsList datas={this.props.datas}/>
+				<CommentsList datas={this.state.datas}/>
 				<CommentsForm />
 			</div>
 		);
 	}
 });
 
-var datas = [
-	{author: "Ricky Song", text: "Comments one!"},
-    {author: "Jordan Walke", text: "This is *another* comment!"}
-]
-
 var CommentsList = React.createClass({
-  	render: function() {
+  	render: function() { // Name matters
   		var commentsNodes = this.props.datas.map(function (comments) {
   			return (
   				<Comments author={comments.author}>
@@ -33,7 +48,7 @@ var CommentsList = React.createClass({
 });
 
 var CommentsForm = React.createClass({
-  	render: function() {
+  	render: function() { // Name matters
     	return (
       		<div className="commentsForm">
         		Hello, world! I am a CommentsForm.
@@ -43,7 +58,7 @@ var CommentsForm = React.createClass({
 });
 
 var Comments = React.createClass({
-	render: function() {
+	render: function() { // Name matters
 		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
 		return (
 			<div className="comments">
@@ -57,6 +72,6 @@ var Comments = React.createClass({
 })
 
 React.render(
-	<CommentsBox datas={datas}/>,
+	<CommentsBox url="comments.json" pollInterval={2000} />,
 	document.getElementById('practice')
 );
