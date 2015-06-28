@@ -3,19 +3,30 @@ var CommentsBox = React.createClass({
 		return (
 			<div className="commentsBox">
 				<h1>Comments</h1>
-				<CommentsList />
+				<CommentsList datas={this.props.datas}/>
 				<CommentsForm />
 			</div>
 		);
 	}
 });
 
+var datas = [
+	{author: "Ricky Song", text: "Comments one!"},
+    {author: "Jordan Walke", text: "This is *another* comment!"}
+]
+
 var CommentsList = React.createClass({
   	render: function() {
+  		var commentsNodes = this.props.datas.map(function (comments) {
+  			return (
+  				<Comments author={comments.author}>
+  					{comments.text}
+  				</Comments>
+  			)
+  		})
     	return (
       		<div className="commentsList">
-        		<Comments author="Ricky Song">Comments one!</Comments>
-        		<Comments author="Jordan Walke">This is *another* comment!</Comments>
+      			{commentsNodes}
       		</div>
     	);
   	}
@@ -46,6 +57,6 @@ var Comments = React.createClass({
 })
 
 React.render(
-	<CommentsBox />,
+	<CommentsBox datas={datas}/>,
 	document.getElementById('practice')
 );
