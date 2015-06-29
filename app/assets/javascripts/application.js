@@ -16,5 +16,6 @@
 //= require react
 //= require react_ujs
 //= require components
+//= require marked
 //= require showdown
 //= require_tree .
