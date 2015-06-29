@@ -13,5 +13,8 @@
     "vendor/assets/bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "showdown": "~1.1.0"
+  }
 }
